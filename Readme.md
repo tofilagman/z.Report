@@ -2,7 +2,7 @@
 
 a library that wraps and render razor html to pdf
 
-[![NuGet Version and Downloads count](https://buildstats.info/nuget/z.Report?includePreReleases=true)](https://www.nuget.org/profiles/z.Report)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/z.Report?includePreReleases=true)](https://www.nuget.org/profiles/tofilagman)
 
 Engine Types:
 	- WkhtmlToPdf: 1
