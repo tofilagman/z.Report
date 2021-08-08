@@ -46,8 +46,7 @@ public class ReportParameters
         public const string Unspecified = "(Unspecified)"; 
         public string Tag { get; set; }
     }
-     
-[MiddlewareFilter(typeof(ReportPipeline))]
+      
 public class ReportController : ReportController<ReportParameters>
     { 
         public override async Task<ReportParameters> BuildReportParameter()
@@ -105,5 +104,40 @@ Sample Razor view
         </div>
     </div>
 </body>
+
+```
+
+Using fetch in JS 
+
+```javascript
+
+var res = await this.http.fetch('Report/Test', { method: 'post').then(x => x.text());
+
+console.log(res) //data:application/pdf;base64, ...
+
+```
+
+to override the basic report option
+
+```c#
+
+//globally
+public override IReportFeature Configure()
+{
+    return HttpContext.ReportFeature()
+        .Configure((req) => req.Options.PageOrientation = z.Report.Options.Orientation.Landscape)
+        .Base64();
+}
+
+//per method
+[Route("[action]"), HttpPost] 
+public async Task<IActionResult> Test()
+{
+    ReportFeature.Landscape().Base64();
+    var rData = await ReportData.TestData();
+    var pData = await PostProcess(rData);
+
+    return PartialView("Test", pData);
+}
 
 ```

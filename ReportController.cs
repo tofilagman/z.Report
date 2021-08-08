@@ -7,6 +7,7 @@ using z.Report.Model;
 
 namespace z.Report
 {
+    [MiddlewareFilter(typeof(ReportPipeline))]
     public abstract class ReportController<TReportParameter> : Controller where TReportParameter : class
     {
         protected IReportFeature ReportFeature { get; private set; }
@@ -16,11 +17,11 @@ namespace z.Report
             ReportFeature = Configure();
             base.OnActionExecuting(context);
         }
- 
-        private IReportFeature Configure()
+
+        public virtual IReportFeature Configure()
         {
             return HttpContext.ReportFeature()
-                 .Configure((req) => req.Options.PageOrientation = Options.Orientation.Portrait) 
+                 .Configure((req) => req.Options.PageOrientation = Options.Orientation.Portrait)
                  .Base64();
         }
 
