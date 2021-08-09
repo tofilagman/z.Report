@@ -36,19 +36,25 @@ namespace z.Report.Drivers
                 pth = wkhtmlExe;
             }
 
+            var prc = new ProcessStartInfo
+            {
+                FileName = pth,
+                Arguments = switches,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                CreateNoWindow = true
+            };
+
+            if (OperatingSystem.IsWindows())
+            {
+                prc.WorkingDirectory = wkhtmlPath;
+            }
+
             var proc = new Process
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = pth,
-                    Arguments = switches,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    RedirectStandardInput = true,
-                    WorkingDirectory = wkhtmlPath,
-                    CreateNoWindow = true
-                }
+                StartInfo = prc
             };
             proc.Start();
 
@@ -61,7 +67,7 @@ namespace z.Report.Drivers
                 }
             }
 
-            using var ms = new MemoryStream(); 
+            using var ms = new MemoryStream();
             using (var sOut = proc.StandardOutput.BaseStream)
             {
                 byte[] buffer = new byte[4096];
@@ -82,7 +88,7 @@ namespace z.Report.Drivers
 
             proc.WaitForExit();
 
-            return ms.ToArray(); 
+            return ms.ToArray();
         }
 
         /// <summary>
