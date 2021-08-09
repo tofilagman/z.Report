@@ -216,7 +216,7 @@ namespace z.Report.Services
                 wkhtmltopdfPath = Option.ReportPath;
             }
 
-            if (Option.Engine == ReportEngine.WkhtmlToPdf && !Directory.Exists(wkhtmltopdfPath))
+            if (Option.Engine == ReportEngine.WkhtmlToPdf && !Directory.Exists(wkhtmltopdfPath) && OperatingSystem.IsWindows())
             {
                 throw new ApplicationException("Folder containing wkhtmltopdf.exe not found, searched for " + wkhtmltopdfPath);
             }
