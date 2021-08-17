@@ -25,7 +25,7 @@ namespace z.Report
             }
         }
 
-        public static string GetValue(this Orientation orientation)
+        public static string GetValue(this Orientation? orientation)
         {
             switch (orientation)
             {

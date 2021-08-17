@@ -32,7 +32,7 @@ namespace z.Report
 
         public IReportFeature Landscape()
         { 
-            RenderRequest.Options.PageOrientation = Options.Orientation.Landscape;
+            RenderRequest.Options.PageOrientation = Options.Orientation.Landscape; 
             return this;
         }
     }

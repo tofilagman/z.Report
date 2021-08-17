@@ -145,13 +145,13 @@ namespace z.Report.Services
         private byte[] ExecutePhantomJs(string phantomRootFolder, string phantomJsExeToUse, string inputFileName, string outputFolder, RenderOptions param)
         {
             var outputFileName = Path.GetFileNameWithoutExtension(inputFileName);
-            var outputFilePath = Path.Combine(outputFolder, $"{outputFileName}.pdf"); 
+            var outputFilePath = Path.Combine(outputFolder, $"{outputFileName}.pdf");
             try
             {
                 var layout = param.PageWidth > 0 && param.PageHeight > 0
                   ? $"{param.PageWidth}{param.DimensionUnit.GetValue()}*{param.PageHeight}{param.DimensionUnit.GetValue()}"
                   : param.Format.ToString();
-              
+
                 var exePath = Path.Combine(phantomRootFolder, phantomJsExeToUse);
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
@@ -162,11 +162,13 @@ namespace z.Report.Services
                 {
                     FileName = exePath,
                     WorkingDirectory = phantomRootFolder,
-                    Arguments = $@"rasterize.js ""{inputFileName}"" ""{outputFilePath}"" ""{layout}"" {param.ZoomFactor}",
-                    // TODO: include orientation parameter ""{param.Orientation.GetValue()}"" ",
+                    Arguments = $@"rasterize.js ""{inputFileName}"" ""{outputFilePath}"" ""{layout}"" {param.ZoomFactor} ""{param.PageOrientation.GetValue()}""",
                     UseShellExecute = false,
                     CreateNoWindow = true
                 };
+
+                if (Debugger.IsAttached)
+                    Console.WriteLine(startInfo.Arguments);
 
                 var proc = new Process { StartInfo = startInfo };
                 proc.Start();

@@ -90,12 +90,7 @@ namespace z.Report.Options
         ///   Format of the document available in generator.
         /// </summary>
         public Size Format { get; set; } = Size.A4;
-
-        /// <summary>
-        ///   Orientation which the document will be generated.
-        /// </summary>
-        public Orientation Orientation { get; set; } = Orientation.Portrait;
-
+         
         /// <summary>
         ///   Define the scaling factor for the document. The default option
         ///   <c>1</c> represents 100%.
