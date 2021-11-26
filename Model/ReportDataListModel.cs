@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace z.Report.Model
 {
-    public class ReportDataModel<TData, TReportParameter>
+    public class ReportDataListModel<TData, TReportParameter>
     {
-        public TData ResultSet { get; set; }
+        public List<TData> ResultSet { get; set; }
         public TReportParameter Parameters { get; set; }
     }
 }

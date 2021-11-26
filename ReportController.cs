@@ -25,11 +25,26 @@ namespace z.Report
                  .Base64();
         }
 
-        public async Task<ReportDataModel<TData, TReportParameter>> PostProcess<TData>(List<TData> data)
+        public async Task<ReportDataListModel<TData, TReportParameter>> PostListProcess<TData>(List<TData> data)
         {
             if (data.Count == 0)
                 throw new ReportNoDataException();
 
+            return new ReportDataListModel<TData, TReportParameter>
+            {
+                ResultSet = data,
+                Parameters = await BuildReportParameter()
+            };
+        }
+
+        /// <summary>
+        /// This is use when there were custom data for a report and or implementing multiple datasources
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<ReportDataModel<TData, TReportParameter>> PostProcess<TData>(TData data)
+        { 
             return new ReportDataModel<TData, TReportParameter>
             {
                 ResultSet = data,

@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/tofilagman/z.Report</RepositoryUrl>
     <PackageProjectUrl>https://github.com/tofilagman/z.Report</PackageProjectUrl>
     <Authors>tofilagman</Authors>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageIcon>gravatar.png</PackageIcon>
     <PackageIconUrl />
     <Description>Wrapper for WkHtmlToPdf and PhantomJs which uses Razor view as template</Description>

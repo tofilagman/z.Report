@@ -7,17 +7,17 @@ namespace z.Report
     {
         public ReportFeature(HttpContext context)
         {
-            RenderRequest = new RenderRequest(); 
-            Context = context; 
+            RenderRequest = new RenderRequest();
+            Context = context;
             Enabled = true;
             Base64Content = false;
         }
 
         public RenderRequest RenderRequest { get; set; }
-        public bool Enabled { get; set; }
-        public HttpContext Context { get; set; } 
+        public bool Enabled { get; private set; }
+        public HttpContext Context { get; set; }
         public bool Base64Content { get; private set; }
-         
+
         public IReportFeature Configure(Action<RenderRequest> req)
         {
             req.Invoke(RenderRequest);
@@ -31,8 +31,18 @@ namespace z.Report
         }
 
         public IReportFeature Landscape()
-        { 
-            RenderRequest.Options.PageOrientation = Options.Orientation.Landscape; 
+        {
+            RenderRequest.Options.PageOrientation = Options.Orientation.Landscape;
+            return this;
+        }
+
+        /// <summary>
+        /// This Option will disable the pdf rendering
+        /// </summary>
+        /// <returns></returns>
+        public IReportFeature Disabled()
+        {
+            Enabled = false;
             return this;
         }
     }

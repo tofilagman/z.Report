@@ -10,11 +10,13 @@ namespace z.Report
     public interface IReportFeature
     {
         RenderRequest RenderRequest { get; set; }
-        bool Enabled { get; set; }
+        bool Enabled { get; }
+        IReportFeature Disabled();
         IReportFeature Configure(Action<RenderRequest> req);
         HttpContext Context { get; set; }   
         IReportFeature Base64();
         bool Base64Content { get; }
         IReportFeature Landscape();
+        
     }
 }
