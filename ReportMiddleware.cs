@@ -56,8 +56,17 @@ namespace z.Report
                 if (feature.Base64Content)
                 {
                     context.Response.ContentType = "application/pdf;base64";
-                    var rpts = new StringContent($"data:application/pdf;base64,{ Convert.ToBase64String(report) }");
-                    await rpts.CopyToAsync(originalResponseStream);
+
+                    var data = Convert.ToBase64String(report);
+                    if (feature.Base64AppendString)
+                        data = $"data:application/pdf;base64,{ data }";
+
+                    var rpts = new StringContent(data);
+                    var marr = await rpts.ReadAsByteArrayAsync();
+                    using var ms = new MemoryStream(marr);
+                    
+                    context.Response.ContentLength = ms.Length;
+                    await ms.CopyToAsync(originalResponseStream);
                 }
                 else
                 {

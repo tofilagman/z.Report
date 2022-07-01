@@ -25,7 +25,7 @@ namespace z.Report
                  .Base64();
         }
 
-        public async Task<ReportDataListModel<TData, TReportParameter>> PostListProcess<TData>(List<TData> data)
+        public virtual async Task<ReportDataListModel<TData, TReportParameter>> PostListProcess<TData>(List<TData> data)
         {
             if (data.Count == 0)
                 throw new ReportNoDataException();
@@ -43,7 +43,7 @@ namespace z.Report
         /// <typeparam name="TData"></typeparam>
         /// <param name="data"></param>
         /// <returns></returns>
-        public async Task<ReportDataModel<TData, TReportParameter>> PostProcess<TData>(TData data)
+        public virtual async Task<ReportDataModel<TData, TReportParameter>> PostProcess<TData>(TData data)
         { 
             return new ReportDataModel<TData, TReportParameter>
             {

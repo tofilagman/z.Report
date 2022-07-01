@@ -13,9 +13,15 @@ namespace z.Report
         bool Enabled { get; }
         IReportFeature Disabled();
         IReportFeature Configure(Action<RenderRequest> req);
-        HttpContext Context { get; set; }   
-        IReportFeature Base64();
+        HttpContext Context { get; set; }
+        /// <summary>
+        /// Use Base64 string response 
+        /// </summary>
+        /// <param name="appendBase64Prefix">Append PDF document string eg: data:application/pdf;base64,</param>
+        /// <returns></returns>
+        IReportFeature Base64(bool appendBase64Prefix = true);
         bool Base64Content { get; }
+        bool Base64AppendString { get; }
         IReportFeature Landscape();
         
     }
