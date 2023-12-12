@@ -16,6 +16,7 @@ namespace z.Report.Options
     public enum ReportEngine
     {
         WkhtmlToPdf = 1,
-        PhantomPdf = 2
+        PhantomPdf = 2,
+        Chrome = 3
     }
 }

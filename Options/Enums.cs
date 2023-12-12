@@ -1,4 +1,6 @@
 
+using ChromiumHtmlToPdfLib.Enums;
+
 namespace z.Report.Options
 {
     /// <summary>
@@ -154,7 +156,12 @@ namespace z.Report.Options
         /// <summary>
         /// 279.4 x 431.8 mm
         /// </summary>
-        Tabloid
+        Tabloid,
+
+        /// <summary>
+        /// HTML Special Fittings
+        /// </summary>
+        FitToPage
     }
 
     /// <summary>
@@ -190,5 +197,30 @@ namespace z.Report.Options
         Centimeter,
         Inch,
         Pixel
+    }
+
+    public static class EnumExtensions
+    {
+
+        public static PaperFormat ToPaperFormat(this Size size)
+        {
+            switch (size)
+            {
+                case Size.A0: return PaperFormat.A0;
+                case Size.A1: return PaperFormat.A1;
+                case Size.A2: return PaperFormat.A2;
+                case Size.A3: return PaperFormat.A3;
+                case Size.A4: return PaperFormat.A4;
+                case Size.A5: return PaperFormat.A5;
+                case Size.A6: return PaperFormat.A6;
+                case Size.Letter: return PaperFormat.Letter;
+                case Size.Legal: return PaperFormat.Legal;
+                case Size.Tabloid: return PaperFormat.Tabloid;
+                case Size.Ledger: return PaperFormat.Ledger;
+                case Size.FitToPage: return PaperFormat.FitPageToContent;
+                default: return PaperFormat.A4;
+            }
+        }
+
     }
 }
