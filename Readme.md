@@ -143,3 +143,18 @@ public async Task<IActionResult> Test()
 }
 
 ```
+
+Added support for Chrome Engine
+
+Check this project for deployment requirements: https://github.com/Sicos1977/ChromiumHtmlToPdf
+
+```c#
+
+services.AddReport((provider, options) =>
+{
+    options.Engine = z.Report.Options.ReportEngine.Chrome;
+    options.ReportPath = "AutoGen/ReportData";
+    options.UseRelativePath = true;
+});
+
+```
