@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 using z.Report.Options;
 using Microsoft.Extensions.Hosting;
 using z.Report.Drivers;
+using ChromiumHtmlToPdfLib.Settings;
+using ChromiumHtmlToPdfLib;
+using z.Data;
+using Microsoft.Extensions.Logging;
 
 namespace z.Report.Services
 {
@@ -19,11 +23,13 @@ namespace z.Report.Services
     {
         private readonly ReportOptions Option;
         private readonly IHostEnvironment Environment;
+        private readonly ILogger<RenderService> logger;
 
-        public RenderService(ReportOptions option, IHostEnvironment environment)
+        public RenderService(ReportOptions option, IHostEnvironment environment, ILogger<RenderService> logger)
         {
             this.Option = option;
             this.Environment = environment;
+            this.logger = logger;
         }
 
         public async Task<byte[]> RenderAsync(RenderRequest request)
@@ -34,6 +40,8 @@ namespace z.Report.Services
                     return await RenderPhantomAsync(request);
                 case ReportEngine.WkhtmlToPdf:
                     return await RenderwkHtmlToPdfAsync(request);
+                case ReportEngine.Chrome:
+                    return await RenderChromeAsync(request);
                 default:
                     throw new InvalidOperationException("Invalid Engine");
             }
@@ -66,6 +74,35 @@ namespace z.Report.Services
             finally
             {
                 File.Delete(Path.Combine(phantomRootFolder, htmlFileName));
+            }
+        }
+
+        private async Task<byte[]> RenderChromeAsync(RenderRequest request)
+        {
+            var phantomRootFolder = GetPath();
+
+            var outputFolder = Path.Combine(phantomRootFolder, "temp");
+            if (!Directory.Exists(outputFolder))
+                Directory.CreateDirectory(outputFolder);
+
+            var htmlFileName = WriteHtmlToTempFile(outputFolder, request.Template, false);
+            var stream = new MemoryStream();
+            try
+            {
+                var pageSettings = new PageSettings(request.Options.Format.ToPaperFormat())
+                {
+                    Scale = request.Options.ZoomFactor,
+                    Landscape = request.Options.PageOrientation == Orientation.Landscape, 
+                };
+                using var converter = new Converter { UseOldHeadlessMode = true };
+                var uri = new ConvertUri(htmlFileName);
+                 
+                await converter.ConvertToPdfAsync(uri, stream, pageSettings, logger: logger);
+                return stream.ToArray();
+            }
+            finally
+            {
+                //File.Delete(htmlFileName);
             }
         }
 
@@ -199,14 +236,19 @@ namespace z.Report.Services
             proc.WaitForExit();
         }
 
-        private string WriteHtmlToTempFile(string phantomRootFolder, string html)
+        private string WriteHtmlToTempFile(string phantomRootFolder, string html, bool filenameOnly = true)
         {
-            var filename = Path.GetRandomFileName() + ".html";
+            var filename = $"{Guid.NewGuid()}.html";
             var absolutePath = Path.Combine(phantomRootFolder, filename);
+
+            if (OperatingSystem.IsWindows())
+            {
+                absolutePath = absolutePath.Replace('/', '\\');
+            }
 
             File.WriteAllText(absolutePath, html);
 
-            return filename;
+            return filenameOnly ? filename : absolutePath;
         }
 
         private string GetPath()
