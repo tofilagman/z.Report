@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
     <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
     <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
     <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/tofilagman/z.Report</RepositoryUrl>
     <PackageProjectUrl>https://github.com/tofilagman/z.Report</PackageProjectUrl>
     <Authors>tofilagman</Authors>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <PackageIcon>gravatar.png</PackageIcon>
     <PackageIconUrl />
     <Description>Wrapper for WkHtmlToPdf, PhantomJs and Chrome which uses Razor view as template</Description>
